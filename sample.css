@@ -1,0 +1,32 @@
+.form-register{
+    display: flex;
+    flex-direction: column;
+}
+.form-register input{
+   width:100%;
+   height:30px;
+}
+.form-register label{
+    font-weight: bold;
+}
+.heading{
+    text-align: center;
+}
+.submit-btn{
+   width: 60px;
+  align-self:center;
+  margin-top:20px;
+}
+.submit-btn input{
+    border-radius:5px;
+}
+.log{
+    display: flex;
+    justify-content: center;
+    margin-top:40px;
+   
+}
+.log button{
+    border-radius:10px;
+    height:30px;
+}

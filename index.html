@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Form using react</title>
+    <link rel="stylesheet" href="sample.css">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+   class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isLoggedIn: false, name: '',email:'',mobile:'',password:'' };
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleNameChange(event) {
+    this.setState({name: event.target.value});
+   
+  }
+  handleEmailChange=(event)=>{
+      this.setState({email:event.target.value});
+  }
+  handleMobileChange=(event)=>{
+      this.setState({mobile:event.target.value});
+  }
+  handlePasswordChange=(event)=>{
+      this.setState({password:event.target.value});
+  }
+  handleLoginClick=(state)=> {
+      this.setState({isLoggedIn: true});
+    }
+    handleLogoutClick = (state)=> {
+      this.setState({isLoggedIn: false});
+    }
+
+  handleSubmit(event) {
+
+    alert('A name was submitted: ' + this.state.name +this.state.email+this.state.mobile);
+    localStorage.setItem("shiva", this.state.name);
+    var lastname = localStorage.getItem("shiva");
+    console.log(lastname);
+    event.preventDefault();
+    this.setState({name:''});
+    this.setState({email:''});
+    this.setState({mobile:''});
+    this.setState({password:''});
+  }
+
+  render() {
+       const isLoggedIn = this.state.isLoggedIn;
+       console.log(isLoggedIn);
+       if(isLoggedIn){
+
+    return (
+        <div>
+        <h1 className="heading">Login</h1>
+      <form  className="form-register" onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+        </label>
+        <label>
+          Password:
+          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} />
+        </label>  
+        <div className="submit-btn"> 
+           <input type="submit" value="Submit" />
+        </div>   
+      </form>
+      <LogoutButton onClick={this.handleLogoutClick} />
+      </div>
+    );
+       }
+       else{
+           return(
+               <div>
+               <h1 className="heading">Register</h1>
+                <form className="form-register"onSubmit={this.handleSubmit}>
+                    <label>
+                        Name:
+                        <input type="text" value={this.state.name} onChange={this.handleNameChange}  />
+                    </label>    
+                    <label>
+                        Password:
+                        <input  value={this.state.password} onChange={this.handlePasswordChange} type="password"name="name" />
+                     </label>
+                    <label>
+                        Mobile Number:
+                        <input type="tel" value={this.state.mobile} onChange={this.handleMobileChange} />
+                    </label>
+                    <label>
+                        Email:
+                        <input  type="email" value={this.state.email} onChange={this.handleEmailChange} />
+                    </label>
+                <div className="submit-btn">
+                    <input type="submit" value="Submit" />
+                </div>    
+                </form>
+                <LoginButton onClick={this.handleLoginClick} />
+              </div>  
+           );
+       }
+  }
+}
+function LoginButton(props) {
+    return (
+      <div className="log">
+      <button onClick={props.onClick}>
+      If you have account Please  Login
+      </button>
+        </div>
+    );
+  }
+  function LogoutButton(props) {
+    return (
+     <div className="log">
+      <button onClick={props.onClick}>
+        Don't have a account Register?
+      </button>
+        </div>
+    );
+  }
+ReactDOM.render(
+  <NameForm />,
+  document.getElementById('root')
+);
+  
+ 
+  
+    </script>
+</body>
+
+</html>
