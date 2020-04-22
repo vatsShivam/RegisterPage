@@ -10,125 +10,277 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 
-    <!-- Don't use this in production: -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
     <div id="root"></div>
     <script type="text/babel">
+    localStorage.setItem("username1", "John");
+  
+ 
+   
    class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoggedIn: false, name: '',email:'',mobile:'',password:'' };
-
+    this.state = { isLoggedIn: false, name: '',password:'',todos:'' };
     this.handleNameChange = this.handleNameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAlert = this.handleAlert.bind(this);
+    this.handleTodo = this.handleTodo.bind(this);
+    this.editHandle = this.editHandle.bind(this);
+    
   }
+  
+  handleTodo(event) {
+    this.setState({todos: event.target.value});
+    console.log(this.state.todos)
+  }
+  editHandle(event){
+    alert('helloshiv');
+  }
+  handleAlert =(state)=> {
+    alert(this.state.todos)
+    var incompleteTaskHolder=document.getElementById("incomplete-tasks");
+    var completeTaskHolder = document.getElementById("complete-task");  
+
+var listItem=document.createElement("li");
+
+
+var checkBox=document.createElement("input");
+
+var label=document.createElement("label");
+
+var editInput=document.createElement("input");
+
+var editButton=document.createElement("button");
+
+var deleteButton=document.createElement("button");
+
+label.innerText=this.state.todos;
+
+
+checkBox.type="checkbox";
+editInput.type="text";
+
+editButton.innerText="Edit";
+editButton.className="edit";
+
+deleteButton.innerText="Delete";
+deleteButton.className="delete";
+
+
+
+
+listItem.appendChild(checkBox);
+listItem.appendChild(label);
+listItem.appendChild(editInput);
+listItem.appendChild(editButton);
+listItem.appendChild(deleteButton);
+
+
+
+	incompleteTaskHolder.appendChild(listItem);
+  bindTaskEvents(listItem, taskCompleted);
+  this.setState({todos:''});
+
+
+
+
+
+
+    }
+   
 
   handleNameChange(event) {
     this.setState({name: event.target.value});
+    
+      
+    
    
   }
-  handleEmailChange=(event)=>{
-      this.setState({email:event.target.value});
-  }
-  handleMobileChange=(event)=>{
-      this.setState({mobile:event.target.value});
-  }
-  handlePasswordChange=(event)=>{
+  
+ 
+   handlePasswordChange=(event)=>{
       this.setState({password:event.target.value});
-  }
-  handleLoginClick=(state)=> {
-      this.setState({isLoggedIn: true});
+   }
+   handleLoginClick=(state)=> {
+      this.setState({isLoggedIn:false });
     }
     handleLogoutClick = (state)=> {
-      this.setState({isLoggedIn: false});
+      this.setState({isLoggedIn: true});
     }
 
-  handleSubmit(event) {
+    handleSubmit(event) {
+      var namecheck =this.state.name;
+      var shivam =localStorage.getItem('username1');
+      if(shivam==namecheck){
+        this.setState({isLoggedIn: true});
+      }
 
-    alert('A name was submitted: ' + this.state.name +this.state.email+this.state.mobile);
-    localStorage.setItem("shiva", this.state.name);
-    var lastname = localStorage.getItem("shiva");
-    console.log(lastname);
     event.preventDefault();
-    this.setState({name:''});
-    this.setState({email:''});
-    this.setState({mobile:''});
-    this.setState({password:''});
   }
 
   render() {
        const isLoggedIn = this.state.isLoggedIn;
        console.log(isLoggedIn);
        if(isLoggedIn){
-
     return (
-        <div>
-        <h1 className="heading">Login</h1>
-      <form  className="form-register" onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} />
-        </label>  
-        <div className="submit-btn"> 
-           <input type="submit" value="Submit" />
-        </div>   
-      </form>
-      <LogoutButton onClick={this.handleLogoutClick} />
+       
+       <div>
+       <h1 > Welcome {this.state.name}</h1>
+       <LoginButton onClick={this.handleLoginClick} />
+       <h1 className="satyam">To Do List</h1>
+       <div className="container">
+       <p>
+       <label>
+          Add Item:
+          </label>
+          <input   type="text"  value={this.state.todos} onChange={this.handleTodo}/>
+         
+       
+      <AddToDo onClick= {this.handleAlert} />
+      </p>
+      <h3>Todo</h3>
+      <ul id="incomplete-tasks">
+     
+      </ul>
+      <h3>Completed</h3>
+      <ul id="complete-task">
+      </ul>
+    </div>
       </div>
+      
+      
     );
        }
        else{
            return(
-               <div>
-               <h1 className="heading">Register</h1>
-                <form className="form-register"onSubmit={this.handleSubmit}>
-                    <label>
-                        Name:
-                        <input type="text" value={this.state.name} onChange={this.handleNameChange}  />
-                    </label>    
-                    <label>
-                        Password:
-                        <input  value={this.state.password} onChange={this.handlePasswordChange} type="password"name="name" />
-                     </label>
-                    <label>
-                        Mobile Number:
-                        <input type="tel" value={this.state.mobile} onChange={this.handleMobileChange} />
-                    </label>
-                    <label>
-                        Email:
-                        <input  type="email" value={this.state.email} onChange={this.handleEmailChange} />
-                    </label>
-                <div className="submit-btn">
-                    <input type="submit" value="Submit" />
-                </div>    
-                </form>
-                <LoginButton onClick={this.handleLoginClick} />
-              </div>  
+            <div>
+        <h1 className="heading">Login</h1>
+      <form  className="form-register" onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input  className="in1" type="text" value={this.state.name} onChange={this.handleNameChange} />
+        </label>
+      
+        <label>
+          Password:
+          <input className="in2" type="password" value={this.state.password} onChange={this.handlePasswordChange} />
+        </label>  
+        <div className="submit-btn"> 
+           <input type="submit" value="Submit" />
+        </div>  
+        
+      </form>
+      <LogoutButton onClick={this.handleLogoutClick} />
+      </div>
            );
        }
   }
 }
 function LoginButton(props) {
     return (
-      <div className="log">
-      <button onClick={props.onClick}>
-      If you have account Please  Login
+      <div >
+      <div className ="log">
+      <button className="btn1"  onClick={props.onClick}>
+        Log Out
       </button>
+        </div>
         </div>
     );
   }
+  function AddToDo(props) {
+      return(
+        
+        <button className="add" onClick={props.onClick}>
+        Add 
+        </button>
+      
+      );
+
+  }
+ 
+var deleteTask = function() {
+	console.log("Delete task...");
+	var listItem = this.parentNode;
+	var ul = listItem.parentNode;
+
+	ul.removeChild(listItem);
+}
+
+var taskCompleted = function(com) {
+	console.log("Task complete...");
+  var completeTaskHolder = document.getElementById("complete-task");  
+
+	var listItem = this.parentNode;
+	completeTaskHolder.appendChild(listItem);
+	bindTaskEvents(listItem, taskIncomplete);
+}
+var taskIncomplete = function() {
+	console.log("Task incomplete...");
+  var incompleteTaskHolder=document.getElementById("incomplete-tasks");
+
+	var listItem = this.parentNode;
+	incompleteTaskHolder.appendChild(listItem);
+	bindTaskEvents(listItem, taskCompleted);
+  
+}
+var editTask = function() {
+	console.log("Edit task...");
+
+	var listItem = this.parentNode;
+
+	var editInput = listItem.querySelector("input[type=text");
+	var label = listItem.querySelector("label");
+
+	var containsClass = listItem.classList.contains("editMode");
+
+	//if the class of the parent is .editMode
+	if (containsClass) {
+		//Switch from .editMode
+		//label text become the input's value
+		label.innerText = editInput.value;
+	} else {
+		//Switch to .editMode
+		//input value becomes the label's text
+		editInput.value = label.innerText;
+	}
+
+	//Toggle .editMode on the list item
+	listItem.classList.toggle("editMode");
+
+}
+
+
+var bindTaskEvents = function(taskListItem, checkBoxEventHandler,) {
+	console.log("Bind list item events");
+  console.log(checkBoxEventHandler)
+	//select taskListItem's children
+	var checkBox = taskListItem.querySelector("input[type=checkbox]");
+  console.log(checkBox)
+  var editButton = taskListItem.querySelector("button.edit");
+	var deleteButton = taskListItem.querySelector("button.delete");
+
+  
+	//bind editTask to edit button
+	 editButton.onclick = editTask;
+
+	//bind deleteTask to delete button
+	deleteButton.onclick = deleteTask;
+
+	//bind checkBoxEventHandler to checkbox
+	 checkBox.onchange = checkBoxEventHandler;
+}
+
   function LogoutButton(props) {
     return (
-     <div className="log">
+     <div className="rama">
       <button onClick={props.onClick}>
-        Don't have a account Register?
+          Login
       </button>
         </div>
     );
@@ -142,5 +294,8 @@ ReactDOM.render(
   
     </script>
 </body>
-
+<style>
+ 
+  
+</style>
 </html>
